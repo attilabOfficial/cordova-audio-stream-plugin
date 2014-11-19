@@ -38,8 +38,12 @@ under the License.
     	NSString* resourcePath = [command.arguments objectAtIndex:1];
     	NSURL* resourceURL = [NSURL URLWithString:resourcePath];
     	NSLog(@"Now Playing '%@'", resourcePath);
-    	[self setObjAVPlayer:[[AVPlayer alloc] initWithURL:resourceURL]];
-		[[self objAVPlayer] addObserver:self forKeyPath:@"status" options:0 context:nil];
+    	if([self objAVPlayer] == nil){
+    		[self setObjAVPlayer:[[AVPlayer alloc] initWithURL:resourceURL]];
+			[[self objAVPlayer] addObserver:self forKeyPath:@"status" options:0 context:nil];
+		}else{
+		 	[[self objAVPlayer] play];
+		}
     	return;
     }];
 }

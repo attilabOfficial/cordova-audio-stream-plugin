@@ -43,20 +43,25 @@ under the License.
 			[[self objAVPlayer] addObserver:self forKeyPath:@"status" options:0 context:nil];
 		}else{
 		 	[[self objAVPlayer] play];
+			//[[UIApplication sharedApplication]beginReceivingRemoteControlEvents];
+
 		}
     	return;
     }];
 }
-- (void) observeValueForKeyPath:(NSString *)keyPath 
-                                ofObject:(id)object 
-                                change:(NSDictionary  *)change 
+- (void) observeValueForKeyPath:(NSString *)keyPath
+                                ofObject:(id)object
+                                change:(NSDictionary  *)change
                                 context:(void *)context {
 
     if (object == [self objAVPlayer] && [keyPath isEqualToString:@"status"]) {
         if ([self objAVPlayer].status == AVPlayerStatusReadyToPlay) {
         	//Audio session is set to allow streaming in background
             AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-            [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
+            [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];            
+        	[[UIApplication sharedApplication]beginReceivingRemoteControlEvents];
+
+            
             [[self objAVPlayer] play];
         }
         if ([self objAVPlayer].status == AVPlayerStatusFailed) {

@@ -19,10 +19,8 @@
 
 # cordova-audio-stream-plugin
 
-Basic cordova media plugin not allow to play radio audio stream on ios.
+Basic cordova media plugin not allow to play radio audio stream on ios only.
 This cordova plugin allow you to read a live radio stream
-
-The android part of this plugin is from https://github.com/apache/cordova-plugin-media, I don't modify it
 
 #Installation
 Run 
@@ -31,7 +29,7 @@ Run
 #Use it
     my_stream = new Stream("http://your_live_radio_streeam", onSuccess, onError);
     // Play audio
-    my_media.play();
+    my_stream.play();
     function onSuccess() {
         console.log("playAudio():Audio Success");
     }
@@ -41,4 +39,4 @@ Run
     }
 
 You can also stop the music with
-    my_media.stop();
+    my_stream.stop();

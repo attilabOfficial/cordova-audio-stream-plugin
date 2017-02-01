@@ -34,13 +34,25 @@ under the License.
 
 - (void)startPlayingAudio:(CDVInvokedUrlCommand*)command
 {
+
 	[self.commandDelegate runInBackground:^{
+			NSLog(@"start playing");
+
     	NSString* resourcePath = [command.arguments objectAtIndex:1];
     	NSURL* resourceURL = [NSURL URLWithString:resourcePath];
     	NSLog(@"Now Playing '%@'", resourcePath);
     	if([self objAVPlayer] == nil){
     		[self setObjAVPlayer:[[AVPlayer alloc] initWithURL:resourceURL]];
-			[[self objAVPlayer] addObserver:self forKeyPath:@"status" options:0 context:nil];
+				[[self objAVPlayer] addObserver:self forKeyPath:@"status" options:0 context:nil];
+				MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+				[commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+	      		[[self objAVPlayer] play];
+	          return MPRemoteCommandHandlerStatusSuccess;
+	        }];
+	        [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+	            [[self objAVPlayer] pause];
+	            return MPRemoteCommandHandlerStatusSuccess;
+	        }];
 		}else{
 		 	[[self objAVPlayer] play];
 			//[[UIApplication sharedApplication]beginReceivingRemoteControlEvents];
@@ -58,10 +70,10 @@ under the License.
         if ([self objAVPlayer].status == AVPlayerStatusReadyToPlay) {
         	//Audio session is set to allow streaming in background
             AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-            [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];            
+            [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
         	[[UIApplication sharedApplication]beginReceivingRemoteControlEvents];
 
-            
+
             [[self objAVPlayer] play];
         }
         if ([self objAVPlayer].status == AVPlayerStatusFailed) {
@@ -73,6 +85,7 @@ under the License.
 
 - (void)stopPlayingAudio:(CDVInvokedUrlCommand*)command
 {
+	NSLog(@"Stop playing");
 	[[self objAVPlayer] pause];
 }
 

@@ -20,6 +20,9 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioServices.h>
 #import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MPRemoteCommandCenter.h>
+#import <MediaPlayer/MPRemoteCommandEvent.h>
+#import <MediaPlayer/MPRemoteCommand.h>
 
 #import <Cordova/CDVPlugin.h>
 
